@@ -1,4 +1,4 @@
-const express = require('express')
+    const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const config = require('config')
@@ -28,6 +28,12 @@ app.get('/webhook', (req,res)=>{
     }
     res.send('error: no existe conexion')
 })
+app.get('/setup',(req, res)=>{
+
+    setupGetStartedButton(res);
+    setupPersistentMenu(res);
+    setupGreetingText(res);
+})
 
 app.post('/webhook', (req,res)=>{
     let data = req.body
@@ -49,13 +55,125 @@ app.post('/webhook', (req,res)=>{
     res.sendStatus(200)
 })
 
+function setupGreetingText(res){
+    var messageData = {
+        "greeting":[
+            {
+            "locale":"default",
+            "text":"Greeting text for default local !"
+            }, {
+            "locale":"en_US",
+            "text":"Greeting text for en_US local !"
+            }
+        ]};
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+ APP_TOKEN,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        form: messageData
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // Print out the response body
+            res.send(body);
+    
+        } else { 
+            // TODO: Handle errors
+            res.send(body);
+        }
+    });
+    
+    }
+    
+    function setupPersistentMenu(res){
+    var messageData = 
+        {"persistent_menu":[
+            {
+            "locale":"default",
+            "composer_input_disabled":true,
+            "call_to_actions":[
+                {
+                "title":"Info",
+                "type":"nested",
+                "call_to_actions":[
+                    {
+                    "title":"Help",
+                    "type":"postback",
+                    "payload":"HELP_PAYLOAD"
+                    },
+                    {
+                    "title":"Contact Me",
+                    "type":"postback",
+                    "payload":"CONTACT_INFO_PAYLOAD"
+                    }
+                ]
+                },
+                {
+                "type":"web_url",
+                "title":"Visit website ",
+                "url":"http://www.techiediaries.com",
+                "webview_height_ratio":"full"
+                }
+            ]
+            },
+            {
+            "locale":"zh_CN",
+            "composer_input_disabled":false
+            }
+        ]};  
+    // Start the request
+    request({
+        url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token="+ APP_TOKEN,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        form: messageData
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // Print out the response body
+            res.send(body);
+    
+        } else { 
+            // TODO: Handle errors
+            res.send(body);
+        }
+    });
+    
+    }
+    
+    
+    function setupGetStartedButton(res){
+    var messageData = {
+            "get_started":{
+                "payload":"getstarted"
+            }
+    };
+    // Start the request
+    request({
+        url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token="+ APP_TOKEN,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        form: messageData
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // Print out the response body
+            res.send(body);
+    
+        } else { 
+            // TODO: Handle errors
+            res.send(body);
+        }
+    });
+    }
+
 function getMessage(event){
     let senderID = event.sender.id
     let recipientID=event.recipient.id
     let messageText =event.message.text
 
     evaluarMensaje(senderID,messageText)
-    //sendGetStarted(senderID)
+    mostrarsaludo(senderID)
   
     
 }
@@ -66,13 +184,13 @@ function getPostback(event){
     let payload= event.postback.payload
 
     switch (payload){
-        case 'get_started':
+/*        case 'get_started':
             sendGetStarted(senderID);
             break;
         case 'check_in':
             sendTextMessage(senderID, "Iniciando");
             break;
-
+*/
         default:
             enviarMensajeTexto(senderID, 'Llamando al postback')
     }
@@ -112,11 +230,11 @@ function sendGetStarted(recipientID){
                 type: 'template',
                 payload: {
                     template_type: 'button',
-                    text:'Bienvenido este es mi bot, en que te puedo ayudar :D ',
+                    text:'Bienvenido {{user_first_name}}! este es Pretabot, en que te puedo ayudar :D ',
                     buttons:[{
                         type: 'postback',
                         title: 'Iniciar',
-                        payload: 'Iniciando'
+                        payload: 'Iniciar'
                     }]
                 }
             }
@@ -129,10 +247,10 @@ function sendGetStarted(recipientID){
 //funcion saludo
 function mostrarsaludo(){
     let messageData={
-     //   recipient :{
-       //     id:senderID
-         //   },
-          //  message:{
+        recipient :{
+            id:senderID
+            },
+         //   message:{
                 greeting:[
                         {
                             locale:'default',
@@ -140,7 +258,7 @@ function mostrarsaludo(){
                         }
                     ]
         
-           // }
+         //   }
     }
     callSendAPI(messageData)
 }
