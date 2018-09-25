@@ -60,10 +60,10 @@ function setupGreetingText(res){
         "greeting":[
             {
             "locale":"default",
-            "text":"Greeting text for default local !"
+            "text":"Bienvenido {{user_first_name}}, a Prestamype, para más información haga click en comenzar!"
             }, {
-            "locale":"en_US",
-            "text":"Greeting text for en_US local !"
+            "locale":"es_LA",
+            "text":"Bienvenido a Prestamype, para más información haga click en comenzar!"
             }
         ]};
     request({
@@ -93,16 +93,17 @@ function setupGreetingText(res){
             "composer_input_disabled":true,
             "call_to_actions":[
                 {
-                "title":"Info",
+                "title":"Información",
                 "type":"nested",
                 "call_to_actions":[
                     {
-                    "title":"Help",
+                    "title":"Quiénes somos?",
                     "type":"postback",
+                    "url":"https://www.prestamype.com/nosotros",
                     "payload":"HELP_PAYLOAD"
                     },
                     {
-                    "title":"Contact Me",
+                    "title":"Contactanos al: (01)480-0708",
                     "type":"postback",
                     "payload":"CONTACT_INFO_PAYLOAD"
                     }
@@ -110,14 +111,14 @@ function setupGreetingText(res){
                 },
                 {
                 "type":"web_url",
-                "title":"Visit website ",
-                "url":"http://www.techiediaries.com",
+                "title":"Visita nuestra website ",
+                "url":"https://www.prestamype.com",
                 "webview_height_ratio":"full"
                 }
             ]
             },
             {
-            "locale":"zh_CN",
+            "locale":"es_LA",
             "composer_input_disabled":false
             }
         ]};  
@@ -204,8 +205,8 @@ function evaluarMensaje(senderID,messageText){
 
     if(SiContiene(messageText,'ayuda')||SiContiene(messageText,'help')){
         mensaje = 'Por el momento no te puedo ayudar'
-    }else if(SiContiene(messageText,'Hola')||SiContiene(messageText,'hola')){
-        sendGetStarted(senderID)
+    }else if(SiContiene(messageText,'Empezar')){
+        sendMessageStarted(senderID)
     }else if(SiContiene(messageText,'troll')){
         enviarMensajeImagen(senderID)
     }else if(SiContiene(messageText,'Iniciar')){
@@ -220,7 +221,7 @@ function evaluarMensaje(senderID,messageText){
 }
 
 //funcion de envio del boton de inicio
-function sendGetStarted(recipientID){
+function sendMessageStarted(recipientID){
     let messageData ={
         recipient:{
             id: recipientID
@@ -230,7 +231,7 @@ function sendGetStarted(recipientID){
                 type: 'template',
                 payload: {
                     template_type: 'button',
-                    text:'Bienvenido {{user_first_name}}! este es Pretabot, en que te puedo ayudar :D ',
+                    text:'Bienvenido! este es Pretabot, en que te puedo ayudar :D ',
                     buttons:[{
                         type: 'postback',
                         title: 'Iniciar',
