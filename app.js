@@ -169,9 +169,14 @@ function setupGreetingText(res){
     }
 
 function getMessage(event){
-    let senderID = event.sender.id
-    let recipientID=event.recipient.id
-    let messageText =event.message.text
+    let senderID = event.sender.id;
+    let recipientID=event.recipient.id;
+    let messageText =event.message.text;
+    let timeOfMessage=event.timestamp;
+    let message =event.message;
+
+    let messageAttachmens =message.attachments;
+    let messageId = message.mid;
 
     evaluarMensaje(senderID,messageText)
     mostrarsaludo(senderID)
@@ -180,9 +185,10 @@ function getMessage(event){
 }
 
 function getPostback(event){
-    let senderID = event.sender.id
-    let recipientID= envent.recipient.id
-    let payload= event.postback.payload
+    let senderID = event.sender.id;
+    let recipientID= envent.recipient.id;
+    let timeOfMessage= evemt.timestamp;
+    let payload= event.postback.payload;
 
     switch (payload){
 /*        case 'get_started':
@@ -231,10 +237,10 @@ function sendMessageStarted(recipientID){
                 type: 'template',
                 payload: {
                     template_type: 'button',
-                    text:'Bienvenido! este es Pretabot, en que te puedo ayudar :D ',
+                    text:'Bienvenido! soy Prestabot, :D elíje una de estas opciones para poderte ayudar 👇 ',
                     buttons:[{
                         type: 'postback',
-                        title: 'Iniciar',
+                        title: 'Información',
                         payload: 'Iniciar'
                     }]
                 }
