@@ -60,11 +60,8 @@ function setupGreetingText(res){
         "greeting":[
             {
             "locale":"default",
-            "text":"Bienvenido {{user_first_name}}, a Prestamype, para más información haga click en comenzar!"
-            }, {
-            "locale":"es_LA",
-            "text":"Bienvenido a Prestamype, para más información haga click en comenzar!"
-            }
+            "text":"Bienvenido {{user_first_name}} 😃 a Prestamype, para más información haga click en comenzar! 👇👇"
+            },
         ]};
     request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+ APP_TOKEN,
@@ -87,39 +84,39 @@ function setupGreetingText(res){
     
     function setupPersistentMenu(res){
     var messageData = 
-        {"persistent_menu":[
+        {persistent_menu:[
             {
-            "locale":"default",
-            "composer_input_disabled":true,
-            "call_to_actions":[
+            locale:"default",
+            composer_input_disabled:true,
+            call_to_actions:[
                 {
-                "title":"Información",
-                "type":"nested",
-                "call_to_actions":[
+                title:"Prestabot",
+                type:"nested",
+                call_to_actions:[
                     {
-                    "title":"Quiénes somos?",
-                    "type":"postback",
-                    "url":"https://www.prestamype.com/nosotros",
-                    "payload":"HELP_PAYLOAD"
+                    title:"Quiénes somos?",
+                    type:"postback",
+                    url:"https://www.prestamype.com/nosotros",
+                    payload:"HELP_PAYLOAD"
                     },
                     {
-                    "title":"Contactanos al: (01)480-0708",
-                    "type":"postback",
-                    "payload":"CONTACT_INFO_PAYLOAD"
+                    title:"Contactanos al: (01)480-0708",
+                    type:"postback",
+                    payload:"CONTACT_INFO_PAYLOAD"
                     }
                 ]
                 },
                 {
-                "type":"web_url",
-                "title":"Visita nuestra website ",
-                "url":"https://www.prestamype.com",
+                type:"web_url",
+                title:"Visita nuestra website ",
+                url:"https://www.prestamype.com",
                 "webview_height_ratio":"full"
                 }
             ]
             },
             {
-            "locale":"es_LA",
-            "composer_input_disabled":false
+            locale:"es_LA",
+            composer_input_disabled:false
             }
         ]};  
     // Start the request
