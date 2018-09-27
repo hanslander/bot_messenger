@@ -191,10 +191,10 @@ function getPostback(event){
     let payload= event.postback.payload;
 
     switch (payload){
-/*        case 'get_started':
+       case 'get_started':
             sendGetStarted(senderID);
             break;
-        case 'check_in':
+ /*       case 'check_in':
             sendTextMessage(senderID, "Iniciando");
             break;
 */
@@ -213,6 +213,9 @@ function evaluarMensaje(senderID,messageText){
         mensaje = 'Por el momento no te puedo ayudar'
     }else if(SiContiene(messageText,'Empezar')){
         sendMessageStarted(senderID)
+    }else if(SiContiene(messageText,'Requisitos')){
+        enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
+
     }else if(SiContiene(messageText,'troll')){
         enviarMensajeImagen(senderID)
     }else if(SiContiene(messageText,'Iniciar')){
@@ -236,12 +239,17 @@ function sendMessageStarted(recipientID){
             attachment:{
                 type: 'template',
                 payload: {
-                    template_type: 'button',
+                    template_type: 'list',
                     text:'Bienvenido! soy Prestabot, :D elíje una de estas opciones para poderte ayudar 👇 ',
-                    buttons:[{
+                    buttons:[buttonTemplate('Nosotros','https://www.prestamype.com/nosotros'),
+                    {
+                        type:'postback',
+                        title: 'Requisitos',
+                        payload: 'Requisitos'
+                    },{
                         type: 'postback',
-                        title: 'Información',
-                        payload: 'Iniciar'
+                        title: 'Más Información',
+                        payload: 'Más Información'
                     }]
                 }
             }
@@ -270,7 +278,7 @@ function mostrarsaludo(){
     callSendAPI(messageData)
 }
 //funcion para enviar imagen
-function enviarMensajeImagen(senderID){
+function enviarMensajeImagen(senderID,imagen_url){
     let messageData ={
          recipient :{
              id:senderID
@@ -279,15 +287,38 @@ function enviarMensajeImagen(senderID){
                 attachment:{
                     type:'image',
                     payload:{
-                        url:'https://tr4.cbsistatic.com/hub/i/2017/09/14/daa3c2c0-d6ca-4ec5-96f8-e6639eb23fad/853430cd937c9e8727b68aff1dd6f10c/troll-meme1.jpg',
+                        url:imagen_url,
                         is_reusable: true
                     }
                 }
             }
         }
 
-        callSendAPI(messageData)
-     }
+    callSendAPI(messageData)
+}
+
+//enviar un boton
+function elementButton(senderID,url,title){
+    let messageData ={
+        recipient:{
+            id: senderID
+        },
+        message:{
+            attachment:{
+                type: 'template',
+                payload:{
+                    template_type: 'button',
+                    buttons:[{
+                        type: 'web_url',
+                        url: url,
+                        title: title
+                    }]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
 
 
 //enviar templates
@@ -309,13 +340,15 @@ function enviarMensajeTemplate(senderID){
     callSendAPI(messageData)
 }
 
-//Enviar una vetana 
-function elementTemplate(){
+
+
+//Enviar una ventana 
+function elementTemplate(title,image_url,subtitle){
     return{
-        title: 'Smash',
-        image_url:'https://pbs.twimg.com/profile_images/943983596192268289/CCGZSbD6_400x400.jpg',
-        subtitle: 'Le gusta jugar Dota :V',
-        buttons: [buttonTemplate('DOTA2','http://es.dota2.com/'),buttonTemplate('Mira el international aqui.','https://www.youtube.com/watch?v=Nv4MpESxtsM')]
+        title: title,
+        image_url: image_url,
+        subtitle: subtitle,
+        buttons: [buttonTemplate()]
     }
 }
 
