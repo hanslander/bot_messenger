@@ -60,7 +60,7 @@ function setupGreetingText(res){
         "greeting":[
             {
             "locale":"default",
-            "text":"Bienvenido {{user_first_name}} 😃 a Prestamype, para más información haga click en comenzar! 👇👇"
+            "text":"Bienvenido {{user_first_name}}, 😃 soy Prestabot, para resolver cualquier duda o tener más información haga click en comenzar! 👇👇"
             },
         ]};
     request({
