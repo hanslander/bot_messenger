@@ -31,7 +31,7 @@ app.get('/webhook', (req,res)=>{
 app.get('/setup',(req, res)=>{
 
     setupGetStartedButton(res);
-    setupPersistentMenu(res);
+//    setupPersistentMenu(res);
     setupGreetingText(res);
 })
 
@@ -57,10 +57,10 @@ app.post('/webhook', (req,res)=>{
 
 function setupGreetingText(res){
     var messageData = {
-        "greeting":[
+        greeting:[
             {
-            "locale":"default",
-            "text":"Bienvenido {{user_first_name}}, 😃 soy Prestabot, para resolver cualquier duda o tener más información haga click en comenzar! 👇👇"
+            locale:'default',
+            text:"Bienvenido {{user_first_name}}, 😃 soy Prestabot, para resolver cualquier duda o tener más información haga click en comenzar! 👇👇"
             },
         ]};
     request({
@@ -86,31 +86,31 @@ function setupGreetingText(res){
     var messageData = 
         {persistent_menu:[
             {
-            locale:"default",
+            locale:'default',
             composer_input_disabled:true,
             call_to_actions:[
                 {
-                title:"Prestabot",
-                type:"nested",
+                title:'Prestabot',
+                type:'nested',
                 call_to_actions:[
                     {
-                    title:"Quiénes somos?",
-                    type:"postback",
-                    url:"https://www.prestamype.com/nosotros",
-                    payload:"HELP_PAYLOAD"
+                    title:'Quiénes somos?',
+                    type:'postback',
+                    url:'https://www.prestamype.com/nosotros',
+                    payload:'HELP_PAYLOAD'
                     },
                     {
-                    title:"Contactanos al: (01)480-0708",
-                    type:"postback",
+                    title:'Contactanos al: (01)480-0708',
+                    type:'postback',
                     payload:"CONTACT_INFO_PAYLOAD"
                     }
                 ]
                 },
                 {
-                type:"web_url",
-                title:"Visita nuestra website ",
-                url:"https://www.prestamype.com",
-                "webview_height_ratio":"full"
+                type:'web_url',
+                title:'Visita nuestra website',
+                url:'https://www.prestamype.com',
+                webview_height_ratio:'full'
                 }
             ]
             },
@@ -142,8 +142,8 @@ function setupGreetingText(res){
     
     function setupGetStartedButton(res){
     var messageData = {
-            "get_started":{
-                "payload":"getstarted"
+            get_started:{
+                payload:'getstarted'
             }
     };
     // Start the request
@@ -189,7 +189,7 @@ function getPostback(event){
 
     switch (payload){
        case 'get_started':
-            sendGetStarted(senderID);
+            sendMessageStarted(senderID);
             break;
  /*       case 'check_in':
             sendTextMessage(senderID, "Iniciando");
@@ -209,7 +209,7 @@ function evaluarMensaje(senderID,messageText){
     if(SiContiene(messageText,'ayuda')||SiContiene(messageText,'help')){
         mensaje = 'Por el momento no te puedo ayudar'
     }else if(SiContiene(messageText,'Empezar')){
-        sendMessageStarted(senderID)
+    //    sendMessageStarted(senderID)
     }else if(SiContiene(messageText,'Requisitos')){
         enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
 
