@@ -1,4 +1,4 @@
-    const express = require('express')
+const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const config = require('config')
@@ -24,9 +24,8 @@ app.get('/webhook', (req,res)=>{
     if(req.query['hub.verify_token'] === 'xuvi_token'){
         res.send(req.query['hub.challenge'])
     }else{
-        res.send('esta conectado correctamente al webhook')
+        res.send('esta conectado correctamente a la webhook')
     }
-    res.send('error: no existe conexion')
 })
 app.get('/setup',(req, res)=>{
 
@@ -41,9 +40,9 @@ app.post('/webhook', (req,res)=>{
         data.entry.forEach((pageEntry) => {
             pageEntry.messaging.forEach((messagingEvent)=>{
                 if(messagingEvent.message){  
-                    getMessage(messagingEvent) 
+                    receivedMessage(messagingEvent) 
                 }else if(messagingEvent.postback){
-                    getPostback(messagingEvent)
+                    receivedPostback(messagingEvent)
                 }else{
                     console.log('Webhook get desconocido: ', messagingEvent)
                 }
@@ -82,7 +81,7 @@ function setupGreetingText(res){
     
     }
     
-    function setupPersistentMenu(res){
+/*    function setupPersistentMenu(res){
     var messageData = 
         {persistent_menu:[
             {
@@ -138,7 +137,7 @@ function setupGreetingText(res){
     });
     
     }
-    
+  */  
     
     function setupGetStartedButton(res){
     var messageData = {
@@ -165,7 +164,7 @@ function setupGreetingText(res){
     });
     }
 
-function getMessage(event){
+function receivedMessage(event){
     let senderID = event.sender.id;
     let recipientID=event.recipient.id;
     let messageText =event.message.text;
@@ -176,19 +175,19 @@ function getMessage(event){
     let messageId = message.mid;
 
     evaluarMensaje(senderID,messageText)
-    mostrarsaludo(senderID)
+//    mostrarsaludo(senderID)
   
     
 }
 
-function getPostback(event){
+function receivedPostback(event){
     let senderID = event.sender.id;
-    let recipientID= envent.recipient.id;
-    let timeOfMessage= evemt.timestamp;
+    let recipientID= event.recipient.id;
+    let timeOfMessage= event.timestamp;
     let payload= event.postback.payload;
 
     switch (payload){
-       case 'get_started':
+       case 'Empezar':
             sendMessageStarted(senderID);
             break;
  /*       case 'check_in':
@@ -196,7 +195,7 @@ function getPostback(event){
             break;
 */
         default:
-            enviarMensajeTexto(senderID, 'Llamando al postback')
+            enviarMensajeTexto(senderID)
     }
 
 }
@@ -208,8 +207,8 @@ function evaluarMensaje(senderID,messageText){
 
     if(SiContiene(messageText,'ayuda')||SiContiene(messageText,'help')){
         mensaje = 'Por el momento no te puedo ayudar'
-    }else if(SiContiene(messageText,'Empezar')){
-    //    sendMessageStarted(senderID)
+    }else if(SiContiene(messageText,'Cobertura')){
+
     }else if(SiContiene(messageText,'Requisitos')){
         enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
 
