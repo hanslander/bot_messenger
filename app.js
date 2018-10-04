@@ -38,6 +38,8 @@ app.post('/webhook', (req,res)=>{
     let data = req.body
     if(data.object == 'page'){
         data.entry.forEach((pageEntry) => {
+            let pageID =pageEntry.id
+
             pageEntry.messaging.forEach((messagingEvent)=>{
                 if(messagingEvent.message){  
                     receivedMessage(messagingEvent) 
@@ -187,15 +189,18 @@ function receivedPostback(event){
     let payload= event.postback.payload;
 
     switch (payload){
-       case 'Empezar':
+        case 'getstarted':
             sendMessageStarted(senderID);
-            break;
- /*       case 'check_in':
-            sendTextMessage(senderID, "Iniciando");
-            break;
-*/
+        break;
+        case 'Requisitos':
+            enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
+        break;
+        case 'Más Información':
+            let msj= 'la verdad no se que pasa'
+            enviarMensajeTexto(senderID,msj)
+
         default:
-            enviarMensajeTexto(senderID)
+            enviarMensajeTexto(senderID,'Hay un problema de respuesta')
     }
 
 }
@@ -210,10 +215,10 @@ function evaluarMensaje(senderID,messageText){
     }else if(SiContiene(messageText,'Cobertura')){
 
     }else if(SiContiene(messageText,'Requisitos')){
-        enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
-
-    }else if(SiContiene(messageText,'troll')){
-        enviarMensajeImagen(senderID)
+        
+    }else if(SiContiene(messageText,'¿Dónde están ubicados?')){
+        enviarMensajeTexto(senderID,'Estamos ubicados en: Calle Mártir José Olaya 129. Of. 1304, Miraflores, Lima.');
+        enviarButtons(senderID,'Ubicación','https://www.google.com.pe/maps/place/Of.+1304,+Calle+M%C3%A1rtir+Jos%C3%A9+Olaya+129,+Miraflores+15074/@-12.1194485,-77.0322329,17z/data=!3m1!4b1!4m5!3m4!1s0x9105c819d14724bd:0x11d6cf807ef9ecc1!8m2!3d-12.1194485!4d-77.0300442')
     }else if(SiContiene(messageText,'Iniciar')){
         enviarMensajeTemplate(senderID)
     }else{
@@ -235,7 +240,7 @@ function sendMessageStarted(recipientID){
             attachment:{
                 type: 'template',
                 payload: {
-                    template_type: 'list',
+                    template_type: 'button',
                     text:'Bienvenido! soy Prestabot, :D elíje una de estas opciones para poderte ayudar 👇 ',
                     buttons:[buttonTemplate('Nosotros','https://www.prestamype.com/nosotros'),
                     {
@@ -316,8 +321,27 @@ function elementButton(senderID,url,title){
     callSendAPI(messageData)
 }
 
+//enviar solo botones de redireccion
+function enviarButtons(senderID,title,url){
+    let messageData={
+        recipient:{
+            id: senderID
+        },
+        message:{
+            attachment:{
+                type: 'template',
+                payload:{
+                    template_type: 'button',
+                    text:'👇Haga click aquí!👇',
+                    buttons: [buttonTemplate(title,url)]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
 
-//enviar templates
+//enviar templates con botones
 function enviarMensajeTemplate(senderID){
     let messageData ={
         recipient:{
@@ -336,9 +360,6 @@ function enviarMensajeTemplate(senderID){
     callSendAPI(messageData)
 }
 
-
-
-//Enviar una ventana 
 function elementTemplate(title,image_url,subtitle){
     return{
         title: title,
@@ -347,12 +368,12 @@ function elementTemplate(title,image_url,subtitle){
         buttons: [buttonTemplate()]
     }
 }
-
 function buttonTemplate(title,url){
     return{
         type:'web_url',
         url: url,
-        title: title
+        title: title,
+        webview_height_ratio: 'full'
     }
 }
 
