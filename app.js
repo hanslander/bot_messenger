@@ -192,12 +192,14 @@ function receivedPostback(event){
         case 'getstarted':
             sendMessageStarted(senderID);
         break;
-        case 'Requisitos':
-            enviarMensajeTexto(senderID,'Los requisitos para acceder a un préstamos son: -Tener una propiedad inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía. -Solicitar un monto mayor o igual a 20,000 soles. - Los contratos son de un año, renovables.');
+
+        case 'requirement':
+            sendRequirements(senderID);
         break;
-        case 'Más Información':
-            let msj= 'la verdad no se que pasa'
-            enviarMensajeTexto(senderID,msj)
+
+        case 'more_information':
+            sendInformation(senderID);
+        break;
 
         default:
             enviarMensajeTexto(senderID,'Hay un problema de respuesta')
@@ -205,7 +207,7 @@ function receivedPostback(event){
 
 }
 
-// funcion para enviar mensajes
+// funcion para reponder los mensajes tipeados o enviados por el ususario
 function evaluarMensaje(senderID,messageText){
     let mensaje ='';
     
@@ -214,8 +216,8 @@ function evaluarMensaje(senderID,messageText){
         mensaje = 'Por el momento no te puedo ayudar'
     }else if(SiContiene(messageText,'Cobertura')){
 
-    }else if(SiContiene(messageText,'Requisitos')){
-        
+    }else if(SiContiene(messageText,'¿Horario de atención?')){
+        enviarMensajeTexto(senderID,'Puedes contactarnos de lunes a viernes de 9 am a 6 pm, a nuestro telefono al telf: (01)480-0708');
     }else if(SiContiene(messageText,'¿Dónde están ubicados?')){
         enviarMensajeTexto(senderID,'Estamos ubicados en: Calle Mártir José Olaya 129. Of. 1304, Miraflores, Lima.');
         enviarButtons(senderID,'Ubicación','https://www.google.com.pe/maps/place/Of.+1304,+Calle+M%C3%A1rtir+Jos%C3%A9+Olaya+129,+Miraflores+15074/@-12.1194485,-77.0322329,17z/data=!3m1!4b1!4m5!3m4!1s0x9105c819d14724bd:0x11d6cf807ef9ecc1!8m2!3d-12.1194485!4d-77.0300442')
@@ -246,11 +248,11 @@ function sendMessageStarted(recipientID){
                     {
                         type:'postback',
                         title: 'Requisitos',
-                        payload: 'Requisitos'
+                        payload: 'requirement'
                     },{
                         type: 'postback',
                         title: 'Más Información',
-                        payload: 'Más Información'
+                        payload: 'more_information'
                     }]
                 }
             }
@@ -259,6 +261,57 @@ function sendMessageStarted(recipientID){
     callSendAPI(messageData)
 }
 
+function sendRequirements(recipientID){
+    let messageData ={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type:'template',
+                payload:{
+                    template_type: 'button',
+                    text: 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.',
+                    buttons:[
+                        buttonTemplate('Sí, precalificar','https://www.prestamype.com/prestamos'),
+                        {
+                        type:'postback',
+                        title: 'Más Información',
+                        payload: 'more_information'
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
+
+//función para enviar más información
+function sendInformation(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type: 'template',
+                payload:{
+                    template_type: 'generic',
+ //                   text:'👇Elíja una de las siguiente opciones👇',
+                    elements: [
+                        {
+                            title: '¿Que tipo de garantias aceptan?',
+                            imagen_url:'http://www.tvperu.gob.pe/sites/default/files/styles/articulo_780x438/public/garantia-rojo1.png?itok=-5nTznAr',
+                            subtitle:''
+                        }
+                            ]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
 
 //funcion saludo
 function mostrarsaludo(){
@@ -341,6 +394,8 @@ function enviarButtons(senderID,title,url){
     callSendAPI(messageData)
 }
 
+
+
 //enviar templates con botones
 function enviarMensajeTemplate(senderID){
     let messageData ={
@@ -368,12 +423,21 @@ function elementTemplate(title,image_url,subtitle){
         buttons: [buttonTemplate()]
     }
 }
+//boton de enlace
 function buttonTemplate(title,url){
     return{
         type:'web_url',
         url: url,
         title: title,
         webview_height_ratio: 'full'
+    }
+}
+//boton de texto
+function buttonText(title,msgtitle){
+    return{
+        type: 'postback',
+        title: title,
+        payload: msgtitle,
     }
 }
 
