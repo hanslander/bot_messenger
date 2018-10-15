@@ -30,7 +30,7 @@ app.get('/webhook', (req,res)=>{
 app.get('/setup',(req, res)=>{
 
     setupGetStartedButton(res);
-//    setupPersistentMenu(res);
+    setupPersistentMenu(res);
     setupGreetingText(res);
 })
 
@@ -83,22 +83,22 @@ function setupGreetingText(res){
     
     }
     
-/*    function setupPersistentMenu(res){
+   function setupPersistentMenu(res){
     var messageData = 
         {persistent_menu:[
             {
             locale:'default',
-            composer_input_disabled:true,
+            composer_input_disabled:false,
             call_to_actions:[
                 {
-                title:'Prestabot',
+                title:'MENU',
                 type:'nested',
                 call_to_actions:[
                     {
                     title:'Quiénes somos?',
                     type:'postback',
                     url:'https://www.prestamype.com/nosotros',
-                    payload:'HELP_PAYLOAD'
+                    webview_height_ratio:"full"
                     },
                     {
                     title:'Contactanos al: (01)480-0708',
@@ -117,7 +117,7 @@ function setupGreetingText(res){
             },
             {
             locale:"es_LA",
-            composer_input_disabled:false
+            composer_input_disabled:false,
             }
         ]};  
     // Start the request
@@ -139,7 +139,7 @@ function setupGreetingText(res){
     });
     
     }
-  */  
+    
     
     function setupGetStartedButton(res){
     var messageData = {
@@ -197,8 +197,10 @@ function receivedPostback(event){
             sendRequirements(senderID);
         break;
 
-        case 'more_information':
-            sendInformation(senderID);
+        case 'more_information'|| 'more_information2':
+            mj='algo pasa aqui',
+            enviarMensajeTexto(senderID,mj)
+            sendInformation(senderID)
         break;
 
         default:
@@ -274,11 +276,7 @@ function sendRequirements(recipientID){
                     text: 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.',
                     buttons:[
                         buttonTemplate('Sí, precalificar','https://www.prestamype.com/prestamos'),
-                        {
-                        type:'postback',
-                        title: 'Más Información',
-                        payload: 'more_information'
-                        }
+                        buttonText('Más Información','more_information2')
                     ]
                 }
             }
@@ -288,24 +286,38 @@ function sendRequirements(recipientID){
 }
 
 //función para enviar más información
-function sendInformation(recipientID){
+function sendInformation(senderID){
     let messageData={
         recipient:{
-            id: recipientID
+            id: senderID
         },
         message:{
             attachment:{
                 type: 'template',
                 payload:{
                     template_type: 'generic',
- //                   text:'👇Elíja una de las siguiente opciones👇',
+//                    text:'👇Elíja una de las siguiente opciones👇',
                     elements: [
                         {
-                            title: '¿Que tipo de garantias aceptan?',
-                            imagen_url:'http://www.tvperu.gob.pe/sites/default/files/styles/articulo_780x438/public/garantia-rojo1.png?itok=-5nTznAr',
-                            subtitle:''
+                            title:'¿Que tipo de garantias aceptan?',
+                            image_url: 'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=2159024400&v=beta&t=z5a3tIfbdGTquiGkguTj2FWizDJLv9zsnTKXDptSM2E',
+                            subtitle:'asd',
+                            buttons:{
+                                type: 'postback',
+                                title:'Preguntar',
+                                payload: 'RP1MI'  
+                            }                                                    
+                        },{
+                            title:'¿En cuanto Tiempo Recibo mi prestamo?',
+                            image_url: 'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=2159024400&v=beta&t=z5a3tIfbdGTquiGkguTj2FWizDJLv9zsnTKXDptSM2E',
+                            subtitle:'asd',
+                            buttons:{
+                                type: 'postback',
+                                title:'Preguntar',
+                                payload: 'RP2MI'  
+                            }                                                    
                         }
-                            ]
+                    ]
                 }
             }
         }
@@ -351,7 +363,7 @@ function enviarMensajeImagen(senderID,imagen_url){
     callSendAPI(messageData)
 }
 
-//enviar un boton
+//enviar un boton de redirección
 function elementButton(senderID,url,title){
     let messageData ={
         recipient:{
@@ -432,7 +444,7 @@ function buttonTemplate(title,url){
         webview_height_ratio: 'full'
     }
 }
-//boton de texto
+//boton de texto enlazado
 function buttonText(title,msgtitle){
     return{
         type: 'postback',
