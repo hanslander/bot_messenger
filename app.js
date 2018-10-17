@@ -197,10 +197,11 @@ function receivedPostback(event){
             sendRequirements(senderID);
         break;
 
-        case 'more_information'|| 'more_information2':
+        case 'more_information':
             mj='algo pasa aqui',
-            enviarMensajeTexto(senderID,mj)
-            sendInformation(senderID)
+            enviarMensajeTexto(senderID,mj);
+            sendInformation(senderID);
+            sendRequirements(senderID);
         break;
 
         default:
@@ -276,7 +277,7 @@ function sendRequirements(recipientID){
                     text: 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.',
                     buttons:[
                         buttonTemplate('Sí, precalificar','https://www.prestamype.com/prestamos'),
-                        buttonText('Más Información','more_information2')
+                        buttonText('Más Información','more_information')
                     ]
                 }
             }
@@ -286,38 +287,25 @@ function sendRequirements(recipientID){
 }
 
 //función para enviar más información
-function sendInformation(senderID){
+function sendInformation(recipientID){
     let messageData={
-        recipient:{
-            id: senderID
-        },
-        message:{
-            attachment:{
-                type: 'template',
-                payload:{
-                    template_type: 'generic',
-//                    text:'👇Elíja una de las siguiente opciones👇',
-                    elements: [
-                        {
-                            title:'¿Que tipo de garantias aceptan?',
-                            image_url: 'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=2159024400&v=beta&t=z5a3tIfbdGTquiGkguTj2FWizDJLv9zsnTKXDptSM2E',
-                            subtitle:'asd',
-                            buttons:{
-                                type: 'postback',
-                                title:'Preguntar',
-                                payload: 'RP1MI'  
-                            }                                                    
-                        },{
-                            title:'¿En cuanto Tiempo Recibo mi prestamo?',
-                            image_url: 'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=2159024400&v=beta&t=z5a3tIfbdGTquiGkguTj2FWizDJLv9zsnTKXDptSM2E',
-                            subtitle:'asd',
-                            buttons:{
-                                type: 'postback',
-                                title:'Preguntar',
-                                payload: 'RP2MI'  
-                            }                                                    
-                        }
-                    ]
+		recipient: {
+			id : recipientID
+		},
+		message: {
+			attachment :{
+				type: "template",
+				payload: {
+					template_type: 'generic',
+                    elements: [{
+                        title:'Que tipo de garantias aceptan?',
+                        subtitle:'click',
+                        buttons:{
+                            type: 'postback',
+                            title:'Preguntar',
+                            payload: 'RP1MI'  
+                        }                                                    
+                    }]
                 }
             }
         }
@@ -468,7 +456,47 @@ function enviarMensajeTexto(senderID, mensaje){
     callSendAPI(messageData)
 }
 
-
+function sendPrueba(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+            type:"template",
+            payload:{
+                template_type:"generic",
+                elements:[
+                {
+                    title:"Welcome!",
+                    image_url:"https://petersfancybrownhats.com/company_image.png",
+                    subtitle:"We have the right hat for everyone.",
+                    default_action: {
+                    type: "web_url",
+                    url: "https://petersfancybrownhats.com/view?item=103",
+                    messenger_extensions: false,
+                    webview_height_ratio: "tall",
+                    fallback_url: "https://petersfancybrownhats.com/"
+                    },
+                    buttons:[
+                    {
+                        type:"web_url",
+                        url:"https://petersfancybrownhats.com",
+                        title:"View Website"
+                    },{
+                        type:"postback",
+                        title:"Start Chatting",
+                        payload:"DEVELOPER_DEFINED_PAYLOAD"
+                    }              
+                    ]      
+                }
+                ]
+            }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
 
 //funcion para enviar el requisito HTTP a la plataforma de facebook messenger
 function callSendAPI(messageData){
