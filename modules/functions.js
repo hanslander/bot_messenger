@@ -1,4 +1,5 @@
 require('../config/config')
+require('../server/seeders/questions')
 
 const request = require('request')
 
@@ -38,8 +39,9 @@ function receivedPostback(event){
         case 'more_information':
             mj='algo pasa aqui',
             enviarMensajeTexto(senderID,mj);
+            sendInformation2(senderID);
             sendInformation(senderID);
-            sendRequirements(senderID);
+            sendPrueba(senderID);
         break;
 
         default:
@@ -127,7 +129,7 @@ function sendRequirements(recipientID){
 //función para enviar más información
 function sendInformation(recipientID){
     let messageData={
-		recipient: {
+		recipient:{
 			id : recipientID
 		},
 		message: {
@@ -150,6 +152,49 @@ function sendInformation(recipientID){
     }
     callSendAPI(messageData)
 }
+
+function sendInformation2(recipientID){
+    let messageData={
+        recipient:{
+			id: recipientID
+        },
+        message:{
+            attachment:{
+              type:"template",
+              payload:{
+                template_type:"generic",
+                elements:[
+                   {
+                    title:"Welcome!",
+                    image_url:"https://petersfancybrownhats.com/company_image.png",
+                    subtitle:"We have the right hat for everyone.",
+                    default_action: {
+                      type: "web_url",
+                      url: "https://petersfancybrownhats.com/view?item=103",
+                      messenger_extensions: false,
+                      webview_height_ratio: "tall",
+                      fallback_url: "https://petersfancybrownhats.com/"
+                    },
+                    buttons:[
+                      {
+                        type:"web_url",
+                        url:"https://petersfancybrownhats.com",
+                        title:"View Website"
+                      },{
+                        type:"postback",
+                        title:"Start Chatting",
+                        payload:"DEVELOPER_DEFINED_PAYLOAD"
+                      }              
+                    ]      
+                  }
+                ]
+              }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
+
 
 //funcion saludo
 function mostrarsaludo(){
