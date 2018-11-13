@@ -89,8 +89,6 @@ function evaluarMensaje(senderID,messageText){
 }
 
 
-
-
 //Enviar texto plano
 function enviarMensajeTexto(senderID, mensaje){
     let messageData ={
