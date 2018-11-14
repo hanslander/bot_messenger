@@ -1,7 +1,8 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
-const config = require('config')
+const express = require('express'),
+			bodyParser = require('body-parser'),
+			request = require('request'),
+			{ wrap } = require('./helpers/')
+// const config = require('config')
 
 
 // Token de la pagina: Bot_Mype
@@ -13,37 +14,57 @@ app.use(bodyParser.json())
 
 
 app.get('/',(req, res)=>{
-    res.send('Este es un bot de prueba, by HANS')
+  res.send('Este es un bot de prueba, by HANS')
 })
 
 app.get('/webhook', (req,res)=>{
-    if(req.query['hub.verify_token'] === 'xuvi_token'){
-        res.send(req.query['hub.challenge'])
-    }else{
-        res.send('esta conectado correctamente a la webhook')
-    }
+  if(req.query['hub.verify_token'] === 'xuvi_token'){
+    res.send(req.query['hub.challenge'])
+  }else{
+    res.send('esta conectado correctamente a la webhook')
+  }
 })
 
+function valid(req,res,next) {
+	return req.body.object === 'page' ? next() : res.sendStatus(404)
+}
 
-app.post('/webhook', (req,res)=>{
-    let data = req.body
-    if(data.object == 'page'){
-        data.entry.forEach((pageEntry) => {
+app.post('/webhook', valid, (req,res) => {
+	let data = req.body
 
-            pageEntry.messaging.forEach((messagingEvent)=>{
-                if(messagingEvent.message){  
-                    receivedMessage(messagingEvent) 
-                }else if(messagingEvent.postback){
-                    receivedPostback(messagingEvent)
-                }else{
-                    console.log('Webhook get desconocido: ', messagingEvent)
-                }
-            })
-        });
-    }
+	data.entry.forEach( entry => {
+		let event = entry.messaging[0]
+		console.log(event)
+	})
+
+	res.sendStatus(200)
+})
+
+// app.use((err, req, res, next) => {
+// 	console.log(err)
+// 	res.status(err.msg ? 400 : 500).send({status: 'ne', msg: err.msg || 'Error interno'})
+// })
+
+
+// app.post('/webhook', (req,res)=>{
+//     let data = req.body
+//     if(data.object == 'page'){
+//         data.entry.forEach((pageEntry) => {
+
+//             pageEntry.messaging.forEach((messagingEvent)=>{
+//                 if(messagingEvent.message){  
+//                     receivedMessage(messagingEvent) 
+//                 }else if(messagingEvent.postback){
+//                     receivedPostback(messagingEvent)
+//                 }else{
+//                     console.log('Webhook get desconocido: ', messagingEvent)
+//                 }
+//             })
+//         });
+//     }
     
-    res.sendStatus(200)
-})
+//     res.sendStatus(200)
+// })
 
 
 
