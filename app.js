@@ -35,10 +35,64 @@ app.post('/webhook', valid, (req,res) => {
 	data.entry.forEach( entry => {
 		let event = entry.messaging[0]
 		console.log(event)
+		
+		// Get the sender PSID
+		let sender_psid = event.sender.id;
+		console.log('Sender PSID: ' + sender_psid);
+
+		// Check if the event is a message or postback and
+		// pass the event to the appropriate handler function
+		if (event.message) {
+			receivedMessage(sender_psid, event.message);        
+		} else if (event.postback) {
+			receivedPostback(sender_psid, event.postback);
+		}
 	})
 
 	res.sendStatus(200)
 })
+
+
+function receivedMessage(psid, msg){
+  let text = msg.text
+
+	let response = { text: `You sent the message: "${text}".` }
+
+  send_api(psid, response)
+}
+
+function receivedPostback(psid, postback){
+  let payload = postback.payload;
+
+	let lookup = {
+		ala: 'ala_ps',
+		lel: 'asd',
+		'default': 'default >:v'
+	}
+	
+	let response = { text: lookup[payload] || lookup['default'] }
+
+	send_api(psid, response)
+}
+
+//funcion para enviar el requisito HTTP a la plataforma de facebook messenger
+function send_api(psid, resp) {
+	let body = {
+		recipient: { id: psid },
+		message: resp
+	}
+	
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: APP_TOKEN },
+    method: 'POST',
+    json: body
+  }, (err, res, data) => {
+		if (err) console.log('error al enviar el mensage')
+		else console.log('se envio el mensaje')
+  })
+}
+
 
 // app.use((err, req, res, next) => {
 // 	console.log(err)
@@ -68,28 +122,7 @@ app.post('/webhook', valid, (req,res) => {
 
 
 
-function receivedMessage(event){
-    let senderID = event.sender.id;
-    let messageText =event.message.text;
-    let message =event.message;
 
-
-    evaluarMensaje(senderID,messageText)
-
-  
-    
-}
-
-function receivedPostback(event){
-    let senderID = event.sender.id;
-    let payload= event.postback.payload;
-
-    switch (payload){
-        default:
-            enviarMensajeTexto(senderID,'Hay un problema de respuesta')
-    }
-
-}
 
 // funcion para reponder los mensajes tipeados o enviados por el ususario
 function evaluarMensaje(senderID,messageText){
@@ -126,22 +159,7 @@ function enviarMensajeTexto(senderID, mensaje){
 
 
 
-//funcion para enviar el requisito HTTP a la plataforma de facebook messenger
-function callSendAPI(messageData){
-    request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token: APP_TOKEN},
-        method: 'POST',
-        json: messageData
-    }, (err,res, data)=>{
-        if(err){
-            console.log('error al enviar el mensage')
-        }else{
-            console.log('se envio el mensaje')
-        }
-    })
 
-}
 
 function SiContiene(texto,word){
     return texto.indexOf(word) > -1
