@@ -37,11 +37,8 @@ function receivedPostback(event){
         break;
 
         case 'more_information':
-            mj='algo pasa aqui',
+            mj='oe qué pasa?',
             enviarMensajeTexto(senderID,mj);
-            sendInformation2(senderID);
-            sendInformation(senderID);
-            sendPrueba(senderID);
         break;
 
         default:
@@ -86,7 +83,7 @@ function sendMessageStarted(recipientID){
                 type: 'template',
                 payload: {
                     template_type: 'button',
-                    text:'Bienvenido! soy Prestabot, :D elíje una de estas opciones para poderte ayudar 👇 ',
+                    text:process.env.PTI_001,
                     buttons:[buttonTemplate('Nosotros','https://www.prestamype.com/nosotros'),
                     {
                         type:'postback',
@@ -114,7 +111,7 @@ function sendRequirements(recipientID){
                 type:'template',
                 payload:{
                     template_type: 'button',
-                    text: 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.',
+                    text: process.env.PTI_002,
                     buttons:[
                         buttonTemplate('Sí, precalificar','https://www.prestamype.com/prestamos'),
                         buttonText('Más Información','more_information')
@@ -339,47 +336,7 @@ function enviarMensajeTexto(senderID, mensaje){
     callSendAPI(messageData)
 }
 
-function sendPrueba(recipientID){
-    let messageData={
-        recipient:{
-            id: recipientID
-        },
-        message:{
-            attachment:{
-            type:"template",
-            payload:{
-                template_type:"generic",
-                elements:[
-                {
-                    title:"Welcome!",
-                    image_url:"https://petersfancybrownhats.com/company_image.png",
-                    subtitle:"We have the right hat for everyone.",
-                    default_action: {
-                    type: "web_url",
-                    url: "https://petersfancybrownhats.com/view?item=103",
-                    messenger_extensions: false,
-                    webview_height_ratio: "tall",
-                    fallback_url: "https://petersfancybrownhats.com/"
-                    },
-                    buttons:[
-                    {
-                        type:"web_url",
-                        url:"https://petersfancybrownhats.com",
-                        title:"View Website"
-                    },{
-                        type:"postback",
-                        title:"Start Chatting",
-                        payload:"DEVELOPER_DEFINED_PAYLOAD"
-                    }              
-                    ]      
-                }
-                ]
-            }
-            }
-        }
-    }
-    callSendAPI(messageData)
-}
+
 
 //funcion para enviar el requisito HTTP a la plataforma de facebook messenger
 function callSendAPI(messageData){

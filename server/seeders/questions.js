@@ -1,5 +1,13 @@
 // ============================
-//  Preguntas y Repuestas Tipo 1: Con respecto a la Propiedad
+//  Preguntas o respuestas de INICIO
+// ============================
+process.env.PTI_001 = process.env.PTI_001 || 'Bienvenido! soy Prestabot, :D elíje una de estas opciones para poderte ayudar 👇 '
+process.env.PTI_002 = process.env.PTI_002 || 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.';
+
+
+
+// ============================
+//  Preguntas y Repuestas Tipo 1: "Con respecto a la Propiedad"
 // ============================
 
 process.env.PT1_001 = process.env.PT1_001 || '¿Aceptan inmuebles en provincia?';
@@ -24,7 +32,7 @@ process.env.PT1_007 = process.env.PT1_007 || '';
 process.env.RPT1_007 = process.env.RPT1_007 || '';
 
 // ============================
-//  Preguntas y Repuestas Tipo 2: Con respecto a los Propietarios
+//  Preguntas y Repuestas Tipo 2: "Con respecto a los Propietarios"
 // ============================
 
 process.env.PT2_001 = process.env.PT2_001 || '¿El propietario del inmueble es el único que puede solicitar el préstamo?';
@@ -48,7 +56,7 @@ process.env.RPT2_006 = process.env.RPT2_006 || '';
 
 
 // ============================
-//  Preguntas y Repuestas Tipo 3: Con respecto al Préstamo
+//  Preguntas y Repuestas Tipo 3: "Con respecto al Préstamo"
 // ============================
 
 process.env.PT3_001 = process.env.PT3_001 || '¿Cuál es el monto mínimo que prestan?';
@@ -70,7 +78,7 @@ process.env.PT3_006 = process.env.PT3_006 || '';
 process.env.RPT3_006 = process.env.RPT3_006 || '';
 
 // ============================
-//  Preguntas y Repuestas Tipo 4: Con respecto al Solicitante
+//  Preguntas y Repuestas Tipo 4: "Con respecto al Solicitante"
 // ============================
 
 process.env.PT4_001 = process.env.PT4_001 || '¿Estoy en Infocorp, puedo acceder a un préstamo?';

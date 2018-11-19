@@ -7,17 +7,17 @@ const app =express();
 app.get('/setup',(req, res)=>{
 
     setupGetStartedButton(res);
-    setupPersistentMenu(res);
     setupGreetingText(res);
+    setupPersistentMenu(res);
 })
 
 
 function setupGreetingText(res){
-    var messageData = {
+    let messageData = {
         greeting:[
             {
             locale:'default',
-            text:"Bienvenido {{user_first_name}}, 😃 soy Prestabot, para resolver cualquier duda o tener más información haga click en comenzar! 👇👇"
+            text:"Bienvenido {{user_first_name}}, 😃 soy Prestabot, para resolver cualquier duda o tener más información haga click en EMPEZAR 👇👇"
             },
         ]};
     request({
@@ -38,12 +38,38 @@ function setupGreetingText(res){
     });
     
     }
+
+    function setupGetStartedButton(res){
+        let messageData = {
+                get_started:{
+                    payload:'getstarted'
+                }
+        };
+        // Start the request
+        request({
+            url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token="+ process.env.TOKEN,
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            form: messageData
+        },
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                // Print out the response body
+                res.send(body);
+        
+            } else { 
+                // TODO: Handle errors
+                res.send(body);
+            }
+        });
+    }
     
-   function setupPersistentMenu(res){
-    var messageData = 
-        {persistent_menu:[
+
+function setupPersistentMenu(res){
+    let messageData = {
+        persistent_menu:[
             {
-            locale:'default',
+            locale:"default",
             composer_input_disabled:false,
             call_to_actions:[
                 {
@@ -52,29 +78,24 @@ function setupGreetingText(res){
                 call_to_actions:[
                     {
                     title:'Quiénes somos?',
-                    type:'postback',
-                    url:'https://www.prestamype.com/nosotros',
+                    type:'web_url',
+                    url:"https://www.prestamype.com/nosotros",
                     webview_height_ratio:"full"
                     },
                     {
-                    title:'Contactanos al: (01)480-0708',
+                    title:'Ayuda',
                     type:'postback',
-                    payload:"CONTACT_INFO_PAYLOAD"
+                    payload:"getstarted2"
+                    },
+                    {
+                    title:'Visita nuestra website',
+                    type:'web_url',
+                    url:'https://www.prestamype.com',
+                    webview_height_ratio:'full'
                     }
                 ]
-                },
-                {
-                type:'web_url',
-                title:'Visita nuestra website',
-                url:'https://www.prestamype.com',
-                webview_height_ratio:'full'
-                }
-            ]
+                }]
             },
-            {
-            locale:"es_LA",
-            composer_input_disabled:false,
-            }
         ]};  
     // Start the request
     request({
@@ -97,29 +118,6 @@ function setupGreetingText(res){
     }
     
     
-    function setupGetStartedButton(res){
-    var messageData = {
-            get_started:{
-                payload:'getstarted'
-            }
-    };
-    // Start the request
-    request({
-        url: "https://graph.facebook.com/v2.6/me/messenger_profile?access_token="+ process.env.TOKEN,
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        form: messageData
-    },
-    function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            // Print out the response body
-            res.send(body);
-    
-        } else { 
-            // TODO: Handle errors
-            res.send(body);
-        }
-    });
-    }
+
 
     module.exports = app;
