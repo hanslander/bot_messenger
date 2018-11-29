@@ -12,7 +12,7 @@ function receivedMessage(event){
     let timeOfMessage=event.timestamp;
     let message =event.message;
 
-    let messageAttachmens =message.attachments;
+    
     let messageId = message.mid;
 
     evaluarMensaje(senderID,messageText)
@@ -37,8 +37,28 @@ function receivedPostback(event){
         break;
 
         case 'more_information':
-            mj='oe qué pasa?',
-            enviarMensajeTexto(senderID,mj);
+            enviarMensajeTexto(senderID, process.env.PTI_003);
+            sendInformation(senderID);
+        break;
+
+        case 'PT1_001':
+            enviarMensajeTexto(senderID, process.env.PTI_003);
+            sendQuestionT1(senderID);
+        break;
+
+        case 'PT2_001':
+            enviarMensajeTexto(senderID, process.env.PTI_003);  
+
+        break;
+
+        case 'PT3_001':
+            enviarMensajeTexto(senderID, process.env.PTI_003);  
+
+        break;
+
+        case 'PT4_001':
+            enviarMensajeTexto(senderID, process.env.PTI_003);
+
         break;
 
         default:
@@ -54,8 +74,8 @@ function evaluarMensaje(senderID,messageText){
 
     if(SiContiene(messageText,'ayuda')||SiContiene(messageText,'help')){
         mensaje = 'Por el momento no te puedo ayudar'
-    }else if(SiContiene(messageText,'Cobertura')){
-
+    }else if(SiContiene(messageText,'informacion')){
+        sendInformation(senderID)
     }else if(SiContiene(messageText,'¿Horario de atención?')){
         enviarMensajeTexto(senderID,'Puedes contactarnos de lunes a viernes de 9 am a 6 pm, a nuestro telefono al telf: (01)480-0708');
     }else if(SiContiene(messageText,'¿Dónde están ubicados?')){
@@ -124,33 +144,8 @@ function sendRequirements(recipientID){
 }
 
 //función para enviar más información
-function sendInformation(recipientID){
-    let messageData={
-		recipient:{
-			id : recipientID
-		},
-		message: {
-			attachment :{
-				type: "template",
-				payload: {
-					template_type: 'generic',
-                    elements: [{
-                        title:'Que tipo de garantias aceptan?',
-                        subtitle:'click',
-                        buttons:{
-                            type: 'postback',
-                            title:'Preguntar',
-                            payload: 'RP1MI'  
-                        }                                                    
-                    }]
-                }
-            }
-        }
-    }
-    callSendAPI(messageData)
-}
 
-function sendInformation2(recipientID){
+function sendInformation(recipientID){
     let messageData={
         recipient:{
 			id: recipientID
@@ -162,30 +157,146 @@ function sendInformation2(recipientID){
                 template_type:"generic",
                 elements:[
                    {
-                    title:"Welcome!",
-                    image_url:"https://petersfancybrownhats.com/company_image.png",
-                    subtitle:"We have the right hat for everyone.",
-                    default_action: {
-                      type: "web_url",
-                      url: "https://petersfancybrownhats.com/view?item=103",
-                      messenger_extensions: false,
-                      webview_height_ratio: "tall",
-                      fallback_url: "https://petersfancybrownhats.com/"
-                    },
+                    title:process.env.PTI_004,
+                    image_url:"https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI",
+                    subtitle:"",
                     buttons:[
                       {
-                        type:"web_url",
-                        url:"https://petersfancybrownhats.com",
-                        title:"View Website"
-                      },{
                         type:"postback",
-                        title:"Start Chatting",
-                        payload:"DEVELOPER_DEFINED_PAYLOAD"
+                        title:"Responder",
+                        payload:"PT1_001"
+                      }              
+                    ]      
+                  },
+                  {
+                    title:process.env.PTI_005,
+                    image_url:"https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI",
+                    subtitle:"",
+                    buttons:[
+                     {
+                        type:"postback",
+                        title:"Responder",
+                        payload:"PT2_001"
+                      }              
+                    ]      
+                  },
+                  {
+                    title:process.env.PTI_006,
+                    image_url:"https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI",
+                    subtitle:"",
+                    buttons:[
+                     {
+                        type:"postback",
+                        title:"Responder",
+                        payload:"PT3_001"
+                      }              
+                    ]      
+                  },
+                  {
+                    title:process.env.PTI_007,
+                    image_url:"https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI",
+                    subtitle:"",
+                    buttons:[
+                     {
+                        type:"postback",
+                        title:"Responder",
+                        payload:"PT4_001"
                       }              
                     ]      
                   }
                 ]
               }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
+
+function sendQuestionT1(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type:'template',
+                payload:{
+                    template_type:'generic',
+                    elements:[
+                        {
+                            title:process.env.PT1_001,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_001'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT1_002,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_002'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT1_003,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_003'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT1_004,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_004'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT1_005,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_005'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT1_006,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT1_006'
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
         }
     }
@@ -313,11 +424,11 @@ function buttonTemplate(title,url){
     }
 }
 //boton de texto enlazado
-function buttonText(title,msgtitle){
+function buttonText(title,msgpayload){
     return{
         type: 'postback',
         title: title,
-        payload: msgtitle,
+        payload: msgpayload,
     }
 }
 
