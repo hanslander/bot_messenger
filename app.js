@@ -16,7 +16,7 @@ app.listen(process.env.PORT, ()=>{
 })
 
 app.get('/',(req, res)=>{
-    res.send('Este es un bot de prueba, by HANS')
+    res.send('Se a cargado correctamente la prueba del bot de Prestamype, by HANS')
 })
 
 // Configuración global de rutas

@@ -45,20 +45,100 @@ function receivedPostback(event){
             enviarMensajeTexto(senderID, process.env.PTI_003);
             sendQuestionT1(senderID);
         break;
+    //respuestas a preguntas tipo 1
+        case 'RPT1_001':
+            enviarMensajeTexto(senderID, process.env.RPT1_001);
+        break;
+
+        case 'RPT1_002':
+            enviarMensajeTexto(senderID, process.env.RPT1_002);
+        break;
+
+        case 'RPT1_003':
+            enviarMensajeTexto(senderID, process.env.RPT1_003);
+        break;
+
+        case 'RPT1_004':
+            enviarMensajeTexto(senderID, process.env.RPT1_004);
+        break;
+
+        case 'RPT1_005':
+            enviarMensajeTexto(senderID, process.env.RPT1_005);
+        break;
+
+        case 'RPT1_006':
+            enviarMensajeTexto(senderID, process.env.RPT1_006);
+        break;
 
         case 'PT2_001':
             enviarMensajeTexto(senderID, process.env.PTI_003);  
+            sendQuestionT2(senderID);
+        break;
+    //respuestas a preguntas tipo 2 
+        case 'RPT2_001':
+            enviarMensajeTexto(senderID, process.env.RPT2_001);
+        break;
 
+        case 'RPT2_002':
+            enviarMensajeTexto(senderID, process.env.RPT2_002);
+        break;
+
+        case 'RPT2_003':
+            enviarMensajeTexto(senderID, process.env.RPT2_003);
+        break;
+
+        case 'RPT2_004':
+            enviarMensajeTexto(senderID, process.env.RPT2_004);
+        break;
+
+        case 'RPT2_005':
+            enviarMensajeTexto(senderID, process.env.RPT2_005);
         break;
 
         case 'PT3_001':
             enviarMensajeTexto(senderID, process.env.PTI_003);  
+            sendQuestionT3(senderID);
+        break;
+    //respuestas a preguntas tipo 3
+        case 'RPT3_001':
+            enviarMensajeTexto(senderID, process.env.RPT3_001);
+        break;
 
+        case 'RPT3_002':
+            enviarMensajeTexto(senderID, process.env.RPT3_002);
+        break;
+
+        case 'RPT3_003':
+            enviarMensajeTexto(senderID, process.env.RPT3_003);
+        break;
+
+        case 'RPT3_004':
+            enviarMensajeTexto(senderID, process.env.RPT3_004);
+        break;
+
+        case 'RPT3_005':
+            enviarMensajeTexto(senderID, process.env.RPT3_005);
         break;
 
         case 'PT4_001':
             enviarMensajeTexto(senderID, process.env.PTI_003);
+            sendQuestionT4(senderID);
+        break;
+    //respuestas a preguntas tipo 4
+        case 'RPT4_001':
+            enviarMensajeTexto(senderID, process.env.RPT4_001);
+        break;
 
+        case 'RPT4_002':
+            enviarMensajeTexto(senderID, process.env.RPT4_002);
+        break;
+
+        case 'RPT4_003':
+            enviarMensajeTexto(senderID, process.env.RPT4_003);
+        break;
+
+        case 'RPT4_004':
+            enviarMensajeTexto(senderID, process.env.RPT4_004);
         break;
 
         default:
@@ -67,7 +147,7 @@ function receivedPostback(event){
 
 }
 
-// funcion para reponder los mensajes tipeados o enviados por el ususario
+// funcion para reponder los mensajes tipeados por el ususario
 function evaluarMensaje(senderID,messageText){
     let mensaje ='';
     
@@ -84,7 +164,7 @@ function evaluarMensaje(senderID,messageText){
     }else if(SiContiene(messageText,'Iniciar')){
         enviarMensajeTemplate(senderID)
     }else{
-        mensaje = 'tenemos problemas ' + messageText
+        mensaje = 'En un momento responderemos a su duda: "' + messageText + '"'
     }
 
     enviarMensajeTexto(senderID,mensaje)
@@ -303,6 +383,230 @@ function sendQuestionT1(recipientID){
     callSendAPI(messageData)
 }
 
+function sendQuestionT2(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type:'template',
+                payload:{
+                    template_type:'generic',
+                    elements:[
+                        {
+                            title:process.env.PT2_001,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT2_001'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT2_002,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT2_002'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT2_003,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT2_003'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT2_004,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT2_004'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT2_005,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT2_005'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
+
+function sendQuestionT3(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type:'template',
+                payload:{
+                    template_type:'generic',
+                    elements:[
+                        {
+                            title:process.env.PT3_001,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT3_001'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT3_002,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT3_002'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT3_003,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT3_003'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT3_004,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT3_004'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT3_005,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT3_005'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
+
+function sendQuestionT4(recipientID){
+    let messageData={
+        recipient:{
+            id: recipientID
+        },
+        message:{
+            attachment:{
+                type:'template',
+                payload:{
+                    template_type:'generic',
+                    elements:[
+                        {
+                            title:process.env.PT4_001,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT4_001'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT4_002,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT4_002'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT4_003,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT4_003'
+                                }
+                            ]
+                        },
+                        {
+                            title:process.env.PT4_004,
+                            image_url:'https://media.licdn.com/dms/image/C4D0BAQG9Kkblye3_1Q/company-logo_200_200/0?e=1551312000&v=beta&t=lJsh_2K0Yvt4f_3akq38KJzEinw4_xjTqqsnwei-lJI',
+                            subtitle:'',
+                            buttons:[
+                                {
+                                    type:'postback',
+                                    title:'Responder',
+                                    payload:'RPT4_004'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    callSendAPI(messageData)
+}
 
 //funcion saludo
 function mostrarsaludo(){
