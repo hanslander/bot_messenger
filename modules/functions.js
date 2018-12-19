@@ -152,19 +152,19 @@ function evaluarMensaje(senderID,messageText){
     let mensaje ='';
     
 
-    if(SiContiene(messageText,'ayuda')||SiContiene(messageText,'help')){
+    if(SiContiene(messageText|| '','ayuda')||SiContiene(messageText|| '','help')){
         mensaje = 'Por el momento no te puedo ayudar'
-    }else if(SiContiene(messageText,'informacion')){
+    }else if(SiContiene(messageText|| '','informacion')){
         sendInformation(senderID)
-    }else if(SiContiene(messageText,'¿Horario de atención?')){
-        enviarMensajeTexto(senderID,'Puedes contactarnos de lunes a viernes de 9 am a 6 pm, a nuestro telefono al telf: (01)480-0708');
-    }else if(SiContiene(messageText,'¿Dónde están ubicados?')){
+    }else if(SiContiene(messageText|| '','¿Horario de atención?')){
+        enviarMensajeTexto(senderID,'Puedes contactarnos de lunes a viernes de 9 am a 6 pm, a nuestro telefono: (01)480-0708');
+    }else if(SiContiene(messageText|| '','¿Dónde están ubicados?')){
         enviarMensajeTexto(senderID,'Estamos ubicados en: Calle Mártir José Olaya 129. Of. 1304, Miraflores, Lima.');
         enviarButtons(senderID,'Ubicación','https://www.google.com.pe/maps/place/Of.+1304,+Calle+M%C3%A1rtir+Jos%C3%A9+Olaya+129,+Miraflores+15074/@-12.1194485,-77.0322329,17z/data=!3m1!4b1!4m5!3m4!1s0x9105c819d14724bd:0x11d6cf807ef9ecc1!8m2!3d-12.1194485!4d-77.0300442')
-    }else if(SiContiene(messageText,'Iniciar')){
+    }else if(SiContiene(messageText|| '','Iniciar')){
         enviarMensajeTemplate(senderID)
     }else{
-        mensaje = 'En un momento responderemos a su duda: "' + messageText + '"'
+        mensaje = 'Puedes contactarnos de lunes a viernes de 9 am a 6 pm, a nuestro telefono: (01)480-0708'
     }
 
     enviarMensajeTexto(senderID,mensaje)

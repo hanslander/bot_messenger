@@ -3,7 +3,7 @@
 // ============================
 process.env.PTI_001 = process.env.PTI_001 || 'Bienvenido! soy Prestabot, :D elige una de estas opciones para poderte ayudar 👇 '
 process.env.PTI_002 = process.env.PTI_002 || 'Los requisitos para acceder a un préstamos son: \n -Tener una propiedad 🏡 inscrita en SUNARP en el departamento de Lima que pueda colocar como garantía.\n -Solicitar un monto 💵💵 mayor o igual a 20,000 soles. \n - Los contratos son de un año, renovables.';
-process.env.PTI_003 = process.env.PTI_003 || 'Elige una de las opciones para despejar tus dudas 😃👇👇';
+process.env.PTI_003 = process.env.PTI_003 || 'Elige una de las opciones para despejar tus dudas👇';
 process.env.PTI_004 = process.env.PTI_004 || '¿Tiene dudas con respecto a la propiedad?';
 process.env.PTI_005 = process.env.PTI_005 || '¿Tiene dudas con respecto a los propietarios?';
 process.env.PTI_006 = process.env.PTI_006 || '¿Tiene dudas con respecto a los préstamos?';
