@@ -22,7 +22,7 @@ process.env.PT1_002 = process.env.PT1_002 || '¿Qué requisitos debe cumplir mi 
 process.env.RPT1_002 = process.env.RPT1_002 || '-Estar ubicada en una zona urbanizada que cuente con pistas y veredas. \n -Inscrita en registros públicos y libre de cargas legales.';
 
 process.env.PT1_003 = process.env.PT1_003 || '¿Cómo puedo saber si mi propiedad califica?';
-process.env.RPT1_002 = process.env.RPT1_002 || 'Deberá enviar la copia literal escaneada o fotografías claras al correo empresario@prestamype.com o al whatsapp 913231396. El documento será evaluado por el área legal de Prestamype y luego el solicitante será notificado.';
+process.env.RPT1_003 = process.env.RPT1_003 || 'Deberá enviar la copia literal escaneada o fotografías claras al correo empresario@prestamype.com o al whatsapp 913231396. El documento será evaluado por el área legal de Prestamype y luego el solicitante será notificado.';
 
 process.env.PT1_004 = process.env.PT1_004 || '¿Me pueden calificar con una copia literal antigua?';
 process.env.RPT1_004 = process.env.RPT1_004 || 'De preferencia el documento debe ser actualizado, no ser el caso se solicita que tenga una antigüedad no mayor a un año.';
